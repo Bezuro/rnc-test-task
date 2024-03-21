@@ -13,7 +13,7 @@ Route::get('/', function () {
 });
 
 Route::get('/upload', function () {
-    return Inertia::render('SvgForm');
-})->name('upload');
+    return Inertia::render('CSVForm');
+});
 
 Route::post('/upload', [UploadController::class, 'upload'])->name('upload');

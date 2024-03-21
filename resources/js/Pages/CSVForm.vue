@@ -12,7 +12,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="SvgForm" />
+    <Head title="CSVForm" />
 
     <Layout>
         <div
@@ -21,7 +21,7 @@ const submit = () => {
             <h2
                 class="font-semibold text-xl text-gray-800 leading-tight mb-4 text-center"
             >
-                SVG Form
+                CSV Form
             </h2>
 
             <form @submit.prevent="submit" method="post">
