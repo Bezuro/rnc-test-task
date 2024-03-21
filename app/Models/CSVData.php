@@ -9,8 +9,8 @@ class CSVData extends Model
 {
     use HasFactory;
 
-    protected $table = 'users';
+    protected $table = 'csvdata';
     public $timestamps = false;
 
-    protected $fillable = ['name', 'email', 'age', 'registration_date'];
+    protected $fillable = ['name', 'email', 'registration_date'];
 }

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\CSVData;
 use App\Services\CSVService;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class UploadController extends Controller
 {
@@ -14,31 +17,42 @@ class UploadController extends Controller
 
     public function upload(Request $request)
     {
+        $errors = [];
         $csvFile = $request->file('file');
-        // dd($csvFile);
 
-        // CSVService::validateCSV($csvFile);
-        $this->csvService::validateCSV($csvFile);
+        try {
+            $this->csvService::validateCSV($csvFile);
+        } catch (ValidationException $e) {
+            $errors = $e->validator->errors()->all();
+            return Inertia::render('CSVForm', ['errors' => $errors]);
+        } catch (Exception $e) {
+            $errors[] = $e->getMessage();
+            return Inertia::render('CSVForm', ['errors' => $errors]);
+            // return Inertia::render('CSVForm', ['error' => $e->getMessage()]);
+        }
 
-        // $records = CSVService::readCSV($csvFile->path());
-        $processedData = $this->csvService::processCSV($csvFile->path());
-
-        // $processedData = CSVService::processCSV($records);
-        // $processedData = $this->csvService::processCSV($records);
+        try {
+            $processedData = $this->csvService::processCSV($csvFile->path());
+        } catch (ValidationException $e) {
+            $errors = $e->validator->errors()->all();
+            dd($errors);
+            return Inertia::render('CSVForm', ['errors' => $errors]);
+        } catch (Exception $e) {
+            $errors[] = $e->getMessage();
+            return Inertia::render('CSVForm', ['errors' => $errors]);
+        }
 
         try {
             foreach ($processedData as $item) {
-                // dd($item);
                 CSVData::create($item);
             }
-            // return redirect()->back()->with('success', 'Data from CSV file has been successfully saved.');
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-            // return redirect()->back()->with('error', 'An error occurred while saving data to the database: ' . $e->getMessage());
+        } catch (Exception $e) {
+            $errors[] = 'An error occurred while saving data to the database: ' . $e->getMessage();
+            return Inertia::render('CSVForm', ['errors' => $errors]);
+            // return Inertia::render('CSVForm', ['error' => 'An error occurred while saving data to the database: ' . $e->getMessage()]);
         }
 
-        dd('created');
-        // return Inertia::render('Welcome');
+        return Inertia::render('CSVForm', ['success' => 'Data from CSV file has been successfully saved!']);
     }
 
 }
