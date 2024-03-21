@@ -16,7 +16,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post("upload", form);
+    form.post("/", form);
 };
 </script>
 
