@@ -28,7 +28,6 @@ class UploadController extends Controller
         } catch (Exception $e) {
             $errors[] = $e->getMessage();
             return Inertia::render('CSVForm', ['errors' => $errors]);
-            // return Inertia::render('CSVForm', ['error' => $e->getMessage()]);
         }
 
         try {
@@ -48,7 +47,6 @@ class UploadController extends Controller
         } catch (Exception $e) {
             $errors[] = 'An error occurred while saving data to the database: ' . $e->getMessage();
             return Inertia::render('CSVForm', ['errors' => $errors]);
-            // return Inertia::render('CSVForm', ['error' => 'An error occurred while saving data to the database: ' . $e->getMessage()]);
         }
 
         return Inertia::render('CSVForm', ['success' => 'Data from CSV file has been successfully saved!']);
