@@ -13,7 +13,7 @@ class CSVService
     {
         $validator = Validator::make(
             ['csv_file' => $file],
-            ['csv_file' => 'required|file|extensions:csv|mimes:csv']
+            ['csv_file' => 'required|file|extensions:csv']
         );
 
         if ($validator->fails()) {

@@ -2,7 +2,7 @@ services:
     laravel:
         build:
           dockerfile: Dockerfile
-        image: bezuro/rnc-test-task:latest
+        image: bezuro/rnc-test-task:v2
         extra_hosts:
           - 'host.docker.internal:host-gateway'
         ports:

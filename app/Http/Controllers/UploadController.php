@@ -22,15 +22,7 @@ class UploadController extends Controller
 
         try {
             $this->csvService::validateCSV($csvFile);
-        } catch (ValidationException $e) {
-            $errors = $e->validator->errors()->all();
-            return Inertia::render('CSVForm', ['errors' => $errors]);
-        } catch (Exception $e) {
-            $errors[] = $e->getMessage();
-            return Inertia::render('CSVForm', ['errors' => $errors]);
-        }
 
-        try {
             $processedData = $this->csvService::processCSV($csvFile->path());
         } catch (ValidationException $e) {
             $errors = $e->validator->errors()->all();
